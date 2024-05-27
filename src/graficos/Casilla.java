@@ -28,6 +28,8 @@ public class Casilla extends JPanel {
 	 */
 	private int numero;
 
+	private JLabel lblNumero;
+	
 	/**
 	 * Inicia la casilla y le asigna un número (1-15). Si este fuera igual al máximo
 	 * (16) se identifica como 0. La única casilla que podrá moverse será la marcada
@@ -53,7 +55,7 @@ public class Casilla extends JPanel {
 	 * casilla.
 	 */
 	private void setLabel() {
-		JLabel lblNumero;
+		
 		if (this.numero != 0) {
 			lblNumero = new JLabel(String.valueOf(this.numero), JLabel.CENTER);
 			this.setBackground(new Color(153, 153, 153));
@@ -95,4 +97,7 @@ public class Casilla extends JPanel {
 		return false;
 	}
 
+	public void setColor(Color color) {
+		this.lblNumero.setForeground(color);
+	}
 }

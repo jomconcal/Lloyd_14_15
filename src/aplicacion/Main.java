@@ -4,14 +4,14 @@ import java.awt.EventQueue;
 
 import graficos.Tablero;
 
-public class MainGrafico {
+public class Main {
 
 	public static void main(String[] args) {
 
 		EventQueue.invokeLater(() -> {
 
 			Tablero tablero = new Tablero();
-			tablero.desordenarTableroLogico();
+			tablero.desordenarTablero();
 			tablero.ponerALaEscuha();
 		});
 	}

@@ -56,9 +56,10 @@ public class AccionTeclado extends KeyAdapter {
 			}
 		}
 
-		if (tablero.victoria())
+		if (tablero.victoria()) {
 			tablero.removeKeyListener(this);
-
+			tablero.finalizar();
+		}
 	}
 
 }

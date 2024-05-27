@@ -1,8 +1,10 @@
 package graficos;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
+import javax.swing.border.BevelBorder;
 
 import acciones.AccionTeclado;
 
@@ -37,13 +39,12 @@ public class Tablero extends JFrame {
 		this.setVisible(true);
 		this.setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		this.setLayout(new GridLayout(4,4));
+
 		this.tablero = new Casilla[4][4];
 		rellenaTableroLogico();
 		this.indiceDesorden = 0;
 	}
-	
+
 	public void ponerALaEscuha() {
 		this.setFocusable(true);
 		this.requestFocus();
@@ -54,6 +55,7 @@ public class Tablero extends JFrame {
 	 * Crea las casillas lógicas y las añade a la matriz.
 	 */
 	private void rellenaTableroLogico() {
+		this.setLayout(new GridLayout(4, 4));
 		int num = 1;
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero[i].length; j++) {
@@ -68,7 +70,7 @@ public class Tablero extends JFrame {
 	/**
 	 * Desordena las casillas del tablero. Realiza 100 movimientos.
 	 */
-	public void desordenarTableroLogico() {
+	public void desordenarTablero() {
 
 		for (int i = 0; i < 30; i++) {
 			int numero = (int) (Math.random() * 4);
@@ -82,7 +84,7 @@ public class Tablero extends JFrame {
 	}
 
 	public void colocarNuevoTablero() {
-		
+
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero[i].length; j++) {
 				add(tablero[i][j]);
@@ -90,6 +92,7 @@ public class Tablero extends JFrame {
 		}
 		this.pack();
 	}
+
 	/**
 	 * Calcula el ínidice de desorden respecto a una casilla y las que la suceden.
 	 * Servirá para determinar si se ha acabado la partida cuando el índice sea 0
@@ -187,5 +190,14 @@ public class Tablero extends JFrame {
 		return this.indiceDesorden == 0 && tablero[3][3].getNumero() == 0;
 	}
 
-	
+	public void finalizar() {
+		for (int i = 0; i < tablero.length; i++) {
+			for (int j = 0; j < tablero[i].length; j++) {
+				tablero[i][j].setBackground(new Color(0,78,31));
+				tablero[i][j].setColor(new Color(204,225,123));
+				tablero[i][j].setBorder(new BevelBorder(0));
+			}
+		}
+	}
+
 }
