@@ -21,6 +21,10 @@ public class AccionTeclado extends KeyAdapter {
 		this.tablero = tablero;
 	}
 
+	public void eliminarAccion() {
+		tablero.removeKeyListener(this);
+	}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {

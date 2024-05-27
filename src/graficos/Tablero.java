@@ -1,9 +1,15 @@
 package graficos;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
 import acciones.AccionTeclado;
@@ -28,40 +34,66 @@ public class Tablero extends JFrame {
 	private Casilla[][] tablero;
 
 	/**
+	 * 
+	 */
+	private JPanel panelCentral;
+	/**
 	 * Ínidice que marca cómo de desordenado está el tablero.
 	 */
 	private int indiceDesorden;
+
+	private AccionTeclado accionTeclado;
 
 	/**
 	 * Inicia el tablero y lo rellena con las casillas.
 	 */
 	public Tablero() {
+		this.setLayout(new BorderLayout());
 		this.setVisible(true);
 		this.setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menu = new JMenu("Opciones");
+		JMenuItem reiniciar = new JMenuItem("Reiniciar");
+		reiniciar.addActionListener((e) -> {
+
+			this.removeKeyListener(accionTeclado);
+			rellenaTableroLogico();
+			desordenarTablero();
+			ponerALaEscuha();
+		});
+		menu.add(reiniciar);
+		menuBar.add(menu);
+		panelCentral = new JPanel();
+		panelCentral.setLayout(new GridLayout(4, 4));
 		this.tablero = new Casilla[4][4];
+		this.add(menuBar, BorderLayout.NORTH);
+		this.add(panelCentral, BorderLayout.CENTER);
 		rellenaTableroLogico();
-		this.indiceDesorden = 0;
+
 	}
 
 	public void ponerALaEscuha() {
+		accionTeclado = new AccionTeclado(this);
 		this.setFocusable(true);
 		this.requestFocus();
-		addKeyListener(new AccionTeclado(this));
+		addKeyListener(accionTeclado);
 	}
 
 	/**
-	 * Crea las casillas lógicas y las añade a la matriz.
+	 * Crea las casillas lógicas y las añade a la matriz. Si ya exisiteran las
+	 * elimina. Inicializa el índice de desorden a 0.
 	 */
 	private void rellenaTableroLogico() {
-		this.setLayout(new GridLayout(4, 4));
+		panelCentral.removeAll();
+		this.indiceDesorden = 0;
 		int num = 1;
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero[i].length; j++) {
 				Casilla c = new Casilla(num++);
 				tablero[i][j] = c;
-				add(c);
+				panelCentral.add(c);
 			}
 		}
 		this.pack();
@@ -72,7 +104,7 @@ public class Tablero extends JFrame {
 	 */
 	public void desordenarTablero() {
 
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 70; i++) {
 			int numero = (int) (Math.random() * 4);
 			try {
 				moverFicha(numero);
@@ -80,14 +112,15 @@ public class Tablero extends JFrame {
 
 			}
 		}
+
 		colocarNuevoTablero();
 	}
 
 	public void colocarNuevoTablero() {
-
+		this.panelCentral.removeAll();
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero[i].length; j++) {
-				add(tablero[i][j]);
+				panelCentral.add(tablero[i][j]);
 			}
 		}
 		this.pack();
@@ -122,19 +155,6 @@ public class Tablero extends JFrame {
 			}
 		}
 		this.indiceDesorden = indice;
-	}
-
-	/**
-	 * Representación en cosola del tablero lógico
-	 */
-	public void mostrarTableroLogico() {
-		System.out.println(" -- -- -- --");
-		for (int i = 0; i < tablero.length; i++) {
-			for (int j = 0; j < tablero[i].length; j++) {
-				System.out.print(tablero[i][j]);
-			}
-			System.out.println("|\n -- -- -- --");
-		}
 	}
 
 	/**
@@ -190,11 +210,14 @@ public class Tablero extends JFrame {
 		return this.indiceDesorden == 0 && tablero[3][3].getNumero() == 0;
 	}
 
+	/**
+	 * Se llama cuando se acaba la partida. Cambia el colo de fondo.
+	 */
 	public void finalizar() {
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero[i].length; j++) {
-				tablero[i][j].setBackground(new Color(0,78,31));
-				tablero[i][j].setColor(new Color(204,225,123));
+				tablero[i][j].setBackground(new Color(0, 78, 31));
+				tablero[i][j].setColor(new Color(204, 225, 123));
 				tablero[i][j].setBorder(new BevelBorder(0));
 			}
 		}
